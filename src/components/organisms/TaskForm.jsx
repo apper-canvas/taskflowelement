@@ -22,10 +22,10 @@ const TaskForm = ({
   });
   const [errors, setErrors] = useState({});
 
-  useEffect(() => {
+useEffect(() => {
     if (task) {
       setFormData({
-        title: task.title || "",
+        title: task.title || task.Name || "",
         description: task.description || "",
         priority: task.priority || "medium",
         categoryId: task.categoryId || "",
@@ -79,7 +79,7 @@ const TaskForm = ({
     }
 
     try {
-      const submitData = {
+const submitData = {
         ...formData,
         dueDate: new Date(formData.dueDate).toISOString()
       };
@@ -100,7 +100,7 @@ const TaskForm = ({
     }
   };
 
-  const handleLoadTemplate = (templateData) => {
+const handleLoadTemplate = (templateData) => {
     setFormData({
       title: templateData.title || "",
       description: templateData.description || "",
@@ -213,9 +213,9 @@ const TaskForm = ({
             error={errors.categoryId}
           >
             <option value="">Select Category</option>
-            {categories.map(category => (
+{categories.map(category => (
               <option key={category.Id} value={category.Id.toString()}>
-                {category.name}
+                {category.name || category.Name}
               </option>
             ))}
           </FormField>

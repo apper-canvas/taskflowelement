@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import React, { useEffect, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { toast } from "react-toastify";
-import Button from "@/components/atoms/Button";
-import Input from "@/components/atoms/Input";
+import { format } from "date-fns";
 import ApperIcon from "@/components/ApperIcon";
 import Badge from "@/components/atoms/Badge";
+import Button from "@/components/atoms/Button";
+import Input from "@/components/atoms/Input";
 import templateService from "@/services/api/templateService";
-import { format } from "date-fns";
 
 const TemplateModal = ({ isOpen, onClose, onLoadTemplate, categories = [] }) => {
   const [templates, setTemplates] = useState([]);
@@ -25,11 +25,11 @@ const TemplateModal = ({ isOpen, onClose, onLoadTemplate, categories = [] }) => 
   }, [isOpen]);
 
   useEffect(() => {
-    if (searchQuery) {
+if (searchQuery) {
       const filtered = templates.filter(template =>
-        template.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        template.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        template.taskData.title.toLowerCase().includes(searchQuery.toLowerCase())
+        (template.name || template.Name || "").toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (template.description || "").toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (template.taskData?.title || "").toLowerCase().includes(searchQuery.toLowerCase())
       );
       setFilteredTemplates(filtered);
     } else {
@@ -80,9 +80,9 @@ const TemplateModal = ({ isOpen, onClose, onLoadTemplate, categories = [] }) => 
     setSelectedTemplate(template);
   };
 
-  const getCategoryName = (categoryId) => {
+const getCategoryName = (categoryId) => {
     const category = categories.find(c => c.Id === parseInt(categoryId));
-    return category ? category.name : "Unknown Category";
+    return category ? (category.name || category.Name) : "Unknown Category";
   };
 
   const getPriorityColor = (priority) => {
@@ -102,9 +102,9 @@ const TemplateModal = ({ isOpen, onClose, onLoadTemplate, categories = [] }) => 
     >
       <div className="flex justify-between items-start mb-3">
         <div className="flex-1">
-          <h3 className="font-semibold text-gray-900 mb-1">{template.name}</h3>
-          <p className="text-sm text-gray-600 mb-2">{template.taskData.title}</p>
-          {template.taskData.description && (
+<h3 className="font-semibold text-gray-900 mb-1">{template.name || template.Name}</h3>
+          <p className="text-sm text-gray-600 mb-2">{template.taskData?.title || ""}</p>
+          {template.taskData?.description && (
             <p className="text-xs text-gray-500 mb-2 line-clamp-2">
               {template.taskData.description}
             </p>
@@ -131,10 +131,10 @@ const TemplateModal = ({ isOpen, onClose, onLoadTemplate, categories = [] }) => 
       </div>
       
       <div className="flex flex-wrap gap-2 mb-3">
-        <Badge className={getPriorityColor(template.taskData.priority)}>
-          {template.taskData.priority}
+<Badge className={getPriorityColor(template.taskData?.priority || "medium")}>
+          {template.taskData?.priority || "medium"}
         </Badge>
-        {template.taskData.categoryId && (
+        {template.taskData?.categoryId && (
           <Badge variant="secondary">
             {getCategoryName(template.taskData.categoryId)}
           </Badge>
@@ -176,21 +176,21 @@ const TemplateModal = ({ isOpen, onClose, onLoadTemplate, categories = [] }) => 
       </div>
       
       <div className="space-y-3">
-        <div>
+<div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
             Template Name
           </label>
-          <p className="text-sm text-gray-900">{template.name}</p>
+          <p className="text-sm text-gray-900">{template.name || template.Name}</p>
         </div>
         
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
             Task Title
           </label>
-          <p className="text-sm text-gray-900">{template.taskData.title}</p>
+          <p className="text-sm text-gray-900">{template.taskData?.title || ""}</p>
         </div>
         
-        {template.taskData.description && (
+        {template.taskData?.description && (
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Description
@@ -204,12 +204,12 @@ const TemplateModal = ({ isOpen, onClose, onLoadTemplate, categories = [] }) => 
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Priority
             </label>
-            <Badge className={getPriorityColor(template.taskData.priority)}>
-              {template.taskData.priority}
+            <Badge className={getPriorityColor(template.taskData?.priority || "medium")}>
+              {template.taskData?.priority || "medium"}
             </Badge>
           </div>
           
-          {template.taskData.categoryId && (
+          {template.taskData?.categoryId && (
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Category

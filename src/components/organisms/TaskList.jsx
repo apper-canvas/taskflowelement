@@ -29,10 +29,10 @@ const TaskList = ({
   });
   const [sortBy, setSortBy] = useState("dueDate");
 
-  const filteredAndSortedTasks = useMemo(() => {
+const filteredAndSortedTasks = useMemo(() => {
     let filtered = tasks.filter(task => {
-      const matchesSearch = task.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                           task.description.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesSearch = (task.title || task.Name || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
+                           (task.description || "").toLowerCase().includes(searchTerm.toLowerCase());
       
       const matchesStatus = filters.status === "all" || task.status === filters.status;
       const matchesPriority = filters.priority === "all" || task.priority === filters.priority;
@@ -98,8 +98,8 @@ filtered.sort((a, b) => {
     }
   };
 
-  const getCategoryById = (categoryId) => {
-    return categories.find(cat => cat.Id.toString() === categoryId);
+const getCategoryById = (categoryId) => {
+    return categories.find(cat => cat.Id.toString() === categoryId.toString());
   };
 
   if (loading) {
@@ -180,7 +180,7 @@ filtered.sort((a, b) => {
           <AnimatePresence mode="popLayout">
             {filteredAndSortedTasks.map(task => (
               <TaskCard
-                key={task.Id}
+key={task.Id}
                 task={task}
                 category={getCategoryById(task.categoryId)}
                 onToggleComplete={handleToggleComplete}

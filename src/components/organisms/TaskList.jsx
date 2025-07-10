@@ -42,13 +42,14 @@ const TaskList = ({
     });
 
     // Sort tasks
-    filtered.sort((a, b) => {
+filtered.sort((a, b) => {
       switch (sortBy) {
         case "dueDate":
           return new Date(a.dueDate) - new Date(b.dueDate);
-        case "priority":
+        case "priority": {
           const priorityOrder = { high: 3, medium: 2, low: 1 };
           return priorityOrder[b.priority] - priorityOrder[a.priority];
+        }
         case "created":
           return new Date(b.createdAt) - new Date(a.createdAt);
         case "title":

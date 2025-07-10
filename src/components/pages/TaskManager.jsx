@@ -68,24 +68,16 @@ const TaskManager = () => {
     }
   };
 
-  const handleToggleComplete = async (taskId, completed) => {
-    try {
-      if (completed) {
-        await markTaskComplete(taskId);
-      } else {
-        await markTaskPending(taskId);
-      }
-    } catch (error) {
-      throw error;
+const handleToggleComplete = async (taskId, completed) => {
+    if (completed) {
+      await markTaskComplete(taskId);
+    } else {
+      await markTaskPending(taskId);
     }
   };
 
-  const handleDeleteTask = async (taskId) => {
-    try {
-      await deleteTask(taskId);
-    } catch (error) {
-      throw error;
-    }
+const handleDeleteTask = async (taskId) => {
+    await deleteTask(taskId);
   };
 
   const handleRetry = () => {

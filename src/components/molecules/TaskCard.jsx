@@ -1,4 +1,4 @@
-import React from "react";
+import React, { forwardRef } from "react";
 import { motion } from "framer-motion";
 import { format } from "date-fns";
 import { cn } from "@/utils/cn";
@@ -8,14 +8,14 @@ import StatusBadge from "@/components/molecules/StatusBadge";
 import Button from "@/components/atoms/Button";
 import ApperIcon from "@/components/ApperIcon";
 
-const TaskCard = ({ 
+const TaskCard = forwardRef(({ 
   task, 
   category,
   onToggleComplete,
   onEdit,
   onDelete,
   className 
-}) => {
+}, ref) => {
   const isCompleted = task.status === "completed";
   const isOverdue = new Date(task.dueDate) < new Date() && !isCompleted;
   
@@ -30,7 +30,8 @@ const TaskCard = ({
   };
 
   return (
-    <motion.div
+<motion.div
+      ref={ref}
       layout
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
@@ -129,6 +130,6 @@ const TaskCard = ({
       </div>
     </motion.div>
   );
-};
+});
 
 export default TaskCard;

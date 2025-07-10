@@ -1,0 +1,68 @@
+[
+  {
+    "Id": 1,
+    "title": "Complete project proposal",
+    "description": "Finalize the Q4 project proposal with budget estimates and timeline",
+    "priority": "high",
+    "status": "pending",
+    "categoryId": "1",
+    "dueDate": "2024-01-15T00:00:00.000Z",
+    "createdAt": "2024-01-10T08:00:00.000Z",
+    "completedAt": null
+  },
+  {
+    "Id": 2,
+    "title": "Review marketing campaign",
+    "description": "Analyze the performance metrics of the current marketing campaign",
+    "priority": "medium",
+    "status": "completed",
+    "categoryId": "2",
+    "dueDate": "2024-01-12T00:00:00.000Z",
+    "createdAt": "2024-01-08T10:30:00.000Z",
+    "completedAt": "2024-01-11T14:20:00.000Z"
+  },
+  {
+    "Id": 3,
+    "title": "Team meeting preparation",
+    "description": "Prepare agenda and materials for the weekly team meeting",
+    "priority": "medium",
+    "status": "pending",
+    "categoryId": "1",
+    "dueDate": "2024-01-14T00:00:00.000Z",
+    "createdAt": "2024-01-09T09:15:00.000Z",
+    "completedAt": null
+  },
+  {
+    "Id": 4,
+    "title": "Update website content",
+    "description": "Refresh the about page and add new team member profiles",
+    "priority": "low",
+    "status": "pending",
+    "categoryId": "3",
+    "dueDate": "2024-01-20T00:00:00.000Z",
+    "createdAt": "2024-01-07T16:45:00.000Z",
+    "completedAt": null
+  },
+  {
+    "Id": 5,
+    "title": "Client feedback review",
+    "description": "Go through all client feedback from last month and create action items",
+    "priority": "high",
+    "status": "pending",
+    "categoryId": "2",
+    "dueDate": "2024-01-13T00:00:00.000Z",
+    "createdAt": "2024-01-08T11:20:00.000Z",
+    "completedAt": null
+  },
+  {
+    "Id": 6,
+    "title": "Database backup",
+    "description": "Perform monthly database backup and verify integrity",
+    "priority": "medium",
+    "status": "completed",
+    "categoryId": "3",
+    "dueDate": "2024-01-10T00:00:00.000Z",
+    "createdAt": "2024-01-05T08:00:00.000Z",
+    "completedAt": "2024-01-10T09:30:00.000Z"
+  }
+]

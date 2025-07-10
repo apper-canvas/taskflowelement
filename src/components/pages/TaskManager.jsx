@@ -4,18 +4,18 @@ import { toast } from "react-toastify";
 import TaskList from "@/components/organisms/TaskList";
 import TaskForm from "@/components/organisms/TaskForm";
 import TaskStats from "@/components/organisms/TaskStats";
+import TemplateModal from "@/components/organisms/TemplateModal";
 import Button from "@/components/atoms/Button";
 import useTasks from "@/hooks/useTasks";
 import useCategories from "@/hooks/useCategories";
 import ApperIcon from "@/components/ApperIcon";
-
 const TaskManager = () => {
   const [showForm, setShowForm] = useState(false);
   const [editingTask, setEditingTask] = useState(null);
   const [showStats, setShowStats] = useState(false);
   const [formLoading, setFormLoading] = useState(false);
-
-  const {
+  const [showTemplateModal, setShowTemplateModal] = useState(false);
+const {
     tasks,
     loading: tasksLoading,
     error: tasksError,
@@ -24,7 +24,9 @@ const TaskManager = () => {
     updateTask,
     deleteTask,
     markTaskComplete,
-    markTaskPending
+    markTaskPending,
+    saveAsTemplate,
+    loadTemplate
   } = useTasks();
 
   const {
@@ -66,9 +68,9 @@ const TaskManager = () => {
     } finally {
       setFormLoading(false);
     }
-  };
+};
 
-const handleToggleComplete = async (taskId, completed) => {
+  const handleToggleComplete = async (taskId, completed) => {
     if (completed) {
       await markTaskComplete(taskId);
     } else {
@@ -76,10 +78,35 @@ const handleToggleComplete = async (taskId, completed) => {
     }
   };
 
-const handleDeleteTask = async (taskId) => {
+  const handleDeleteTask = async (taskId) => {
     await deleteTask(taskId);
   };
 
+  const handleSaveAsTemplate = async (taskData) => {
+    try {
+      await saveAsTemplate(taskData);
+      toast.success("Template saved successfully!");
+    } catch (error) {
+      toast.error("Failed to save template. Please try again.");
+    }
+  };
+
+  const handleLoadTemplate = async (templateData) => {
+    try {
+      return await loadTemplate(templateData);
+    } catch (error) {
+      toast.error("Failed to load template. Please try again.");
+      return null;
+    }
+  };
+
+  const handleShowTemplateModal = () => {
+    setShowTemplateModal(true);
+  };
+
+  const handleCloseTemplateModal = () => {
+    setShowTemplateModal(false);
+  };
   const handleRetry = () => {
     loadTasks();
     loadCategories();
@@ -167,18 +194,32 @@ const handleDeleteTask = async (taskId) => {
                 exit={{ opacity: 0, x: 20 }}
                 transition={{ duration: 0.3 }}
               >
-                <TaskForm
+<TaskForm
                   task={editingTask}
                   categories={categories}
                   onSubmit={handleSubmitTask}
                   onCancel={handleCloseForm}
                   loading={formLoading}
+                  onTemplateSelect={handleSaveAsTemplate}
+                  onShowTemplateModal={handleShowTemplateModal}
                 />
               </motion.div>
             )}
           </AnimatePresence>
-        </div>
+</div>
       </div>
+
+      {/* Template Modal */}
+      <AnimatePresence>
+        {showTemplateModal && (
+          <TemplateModal
+            isOpen={showTemplateModal}
+            onClose={handleCloseTemplateModal}
+            onLoadTemplate={handleLoadTemplate}
+            categories={categories}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 };

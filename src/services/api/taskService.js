@@ -1,4 +1,5 @@
 import tasksData from "@/services/mockData/tasks.json";
+import templateService from "@/services/api/templateService";
 
 let tasks = [...tasksData];
 
@@ -77,9 +78,26 @@ const taskService = {
     return tasks.filter(task => task.categoryId === categoryId.toString()).map(task => ({ ...task }));
   },
 
-  async getByStatus(status) {
+async getByStatus(status) {
     await delay(200);
     return tasks.filter(task => task.status === status).map(task => ({ ...task }));
+  },
+
+  async saveAsTemplate(taskData) {
+    await delay(200);
+    const templateData = {
+      title: taskData.title,
+      description: taskData.description,
+      priority: taskData.priority,
+      categoryId: taskData.categoryId,
+      dueDate: taskData.dueDate
+    };
+    return await templateService.create(templateData);
+  },
+
+  async loadTemplate(templateData) {
+    await delay(200);
+    return { ...templateData };
   }
 };
 

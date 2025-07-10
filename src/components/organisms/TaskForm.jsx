@@ -4,13 +4,14 @@ import { toast } from "react-toastify";
 import FormField from "@/components/molecules/FormField";
 import Button from "@/components/atoms/Button";
 import ApperIcon from "@/components/ApperIcon";
-
 const TaskForm = ({ 
   task = null, 
   categories = [], 
   onSubmit, 
   onCancel,
-  loading = false 
+  loading = false,
+  onTemplateSelect,
+  onShowTemplateModal
 }) => {
   const [formData, setFormData] = useState({
     title: "",
@@ -46,7 +47,7 @@ const TaskForm = ({
         [field]: null
       }));
     }
-  };
+};
 
   const validateForm = () => {
     const newErrors = {};
@@ -99,23 +100,74 @@ const TaskForm = ({
     }
   };
 
+  const handleLoadTemplate = (templateData) => {
+    setFormData({
+      title: templateData.title || "",
+      description: templateData.description || "",
+      priority: templateData.priority || "medium",
+      categoryId: templateData.categoryId || "",
+      dueDate: templateData.dueDate ? new Date(templateData.dueDate).toISOString().split("T")[0] : ""
+    });
+    toast.success("Template loaded successfully!");
+  };
+
+  const handleSaveTemplate = () => {
+    if (!formData.title.trim()) {
+      toast.error("Please enter a task title before saving as template");
+      return;
+    }
+    
+    if (onTemplateSelect) {
+      onTemplateSelect(formData);
+    }
+  };
+
+  useEffect(() => {
+    if (onTemplateSelect) {
+      // This effect ensures the parent component can access the handleLoadTemplate function
+      onTemplateSelect.loadTemplate = handleLoadTemplate;
+    }
+  }, [onTemplateSelect]);
+
   return (
     <motion.div
       initial={{ opacity: 0, x: 20 }}
       animate={{ opacity: 1, x: 0 }}
       className="bg-white rounded-lg shadow-lg p-6"
     >
-      <div className="flex items-center justify-between mb-6">
+<div className="flex items-center justify-between mb-6">
         <h2 className="text-xl font-bold text-gray-900 font-display">
           {task ? "Edit Task" : "Create New Task"}
         </h2>
-        <Button
-          variant="ghost"
-          onClick={onCancel}
-          className="p-2 hover:bg-gray-100"
-        >
-          <ApperIcon name="X" size={20} />
-        </Button>
+        <div className="flex items-center space-x-2">
+          {!task && (
+            <Button
+              variant="ghost"
+              onClick={onShowTemplateModal}
+              className="p-2 hover:bg-gray-100"
+              title="Use Template"
+            >
+              <ApperIcon name="FileText" size={20} />
+            </Button>
+          )}
+          {!task && (
+            <Button
+              variant="ghost"
+              onClick={handleSaveTemplate}
+              className="p-2 hover:bg-gray-100"
+              title="Save as Template"
+            >
+              <ApperIcon name="BookmarkPlus" size={20} />
+            </Button>
+          )}
+          <Button
+            variant="ghost"
+            onClick={onCancel}
+            className="p-2 hover:bg-gray-100"
+          >
+            <ApperIcon name="X" size={20} />
+          </Button>
+        </div>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-4">

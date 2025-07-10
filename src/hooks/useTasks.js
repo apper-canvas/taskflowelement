@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import taskService from "@/services/api/taskService";
-
 const useTasks = () => {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -89,13 +88,32 @@ const useTasks = () => {
       console.error("Error marking task pending:", err);
       throw err;
     }
+};
+
+  const saveAsTemplate = async (taskData) => {
+    try {
+      return await taskService.saveAsTemplate(taskData);
+    } catch (err) {
+      setError("Failed to save template. Please try again.");
+      console.error("Error saving template:", err);
+      throw err;
+    }
+  };
+
+  const loadTemplate = async (templateData) => {
+    try {
+      return await taskService.loadTemplate(templateData);
+    } catch (err) {
+      setError("Failed to load template. Please try again.");
+      console.error("Error loading template:", err);
+      throw err;
+    }
   };
 
   useEffect(() => {
     loadTasks();
   }, []);
-
-  return {
+return {
     tasks,
     loading,
     error,
@@ -104,7 +122,9 @@ const useTasks = () => {
     updateTask,
     deleteTask,
     markTaskComplete,
-    markTaskPending
+    markTaskPending,
+    saveAsTemplate,
+    loadTemplate
   };
 };
 
